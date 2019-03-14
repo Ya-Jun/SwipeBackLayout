@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+    }
+
+    signingConfigs {
+        signing
+    }
+
+    buildTypes {
+        release {
+            if (project.hasProperty('storeFile')) {
+                signingConfig signingConfigs.signing
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation project(':library')
+}
+
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.signing.storeFile = file(storeFile)
+}
+
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.signing.storePassword = storePassword
+}
+
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.signing.keyAlias = keyAlias
+}
+
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.signing.keyPassword = keyPassword
+}
